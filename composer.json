@@ -1,0 +1,34 @@
+{
+  "name": "bbit/oddin",
+  "description": "On Demand Dependency InjectioN",
+  "version": "0.0.1",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Andrzej Heczko",
+      "email": "andrzej.heczko@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "BBIT\\Oddin\\": "src/"
+    }
+  },
+  "require": {
+    "psr/simple-cache": "^1.0",
+
+    "php": "^7.2.0"
+  },
+  "require-dev": {
+    "symfony/cache": "^4.3",
+    "phpstan/phpstan": "^0.11.12",
+    "phpunit/phpunit": "^8.2"
+  },
+
+  "scripts": {
+    "test": "phpunit --configuration config/phpunit.xml",
+    "stan": "phpstan analyse src --level 7 -c config/phpstan.neon"
+  }
+}
