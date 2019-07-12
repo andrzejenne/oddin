@@ -1,1 +1,0 @@
-C:37:"PHPUnit\Runner\DefaultTestResultCache":246:{a:2:{s:7:"defects";a:2:{s:38:"CacheResolverTest::testServiceResolver";i:4;s:35:"DIResolverTest::testServiceResolver";i:4;}s:5:"times";a:2:{s:38:"CacheResolverTest::testServiceResolver";d:0.013;s:35:"DIResolverTest::testServiceResolver";d:0.003;}}}

@@ -1,11 +1,11 @@
 <?php
 
 
-namespace BBIT\Oddin\Utils;
+namespace BigBIT\Oddin\Utils;
 
 /**
  * Class PropertyAnnotationReader
- * @package BBIT\Oddin\Utils
+ * @package BigBIT\Oddin\Utils
  */
 class PropertyAnnotationReader
 {

@@ -1,7 +1,7 @@
 <?php
 
 
-use BBIT\Oddin\Traits\InjectsOnDemand;
+use BigBIT\Oddin\Traits\InjectsOnDemand;
 
 /**
  * Class ExampleClass

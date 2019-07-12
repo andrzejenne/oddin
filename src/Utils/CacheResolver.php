@@ -1,7 +1,7 @@
 <?php
 
 
-namespace BBIT\Oddin\Utils;
+namespace BigBIT\Oddin\Utils;
 
 
 use Psr\SimpleCache\CacheInterface;
@@ -9,7 +9,7 @@ use Psr\SimpleCache\InvalidArgumentException;
 
 /**
  * Class CacheResolver
- * @package BBIT\Oddin\Utils
+ * @package BigBIT\Oddin\Utils
  */
 class CacheResolver
 {

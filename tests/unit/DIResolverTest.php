@@ -1,7 +1,7 @@
 <?php
 
 
-use BBIT\Oddin\Singletons\DIResolver;
+use BigBIT\Oddin\Singletons\DIResolver;
 use ns\ExampleService as NsExampleService;
 
 /**

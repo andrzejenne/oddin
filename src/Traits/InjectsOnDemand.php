@@ -1,15 +1,15 @@
 <?php
 
 
-namespace BBIT\Oddin\Traits;
+namespace BigBIT\Oddin\Traits;
 
 
-use BBIT\Oddin\Singletons\DIResolver;
+use BigBIT\Oddin\Singletons\DIResolver;
 use Psr\SimpleCache\InvalidArgumentException;
 
 /**
  * Trait InjectsOnDemand
- * @package BBIT\Oddin\Traits
+ * @package BigBIT\Oddin\Traits
  */
 trait InjectsOnDemand
 {

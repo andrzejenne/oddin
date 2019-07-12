@@ -1,8 +1,8 @@
 <?php
 
 
-use BBIT\Oddin\Utils\CacheResolver;
-use BBIT\Oddin\Utils\SimpleContainer;
+use BigBIT\Oddin\Utils\CacheResolver;
+use BigBIT\Oddin\Utils\SimpleContainer;
 use ns\ExampleService as NsExampleService;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;

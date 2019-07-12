@@ -1,16 +1,14 @@
 <?php
 
 
-namespace BBIT\Oddin\Utils;
+namespace BigBIT\Oddin\Utils;
 
 
-use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * Class SimpleContainer
- * @package BBIT\Oddin\Utils
+ * @package BigBIT\Oddin\Utils
  */
 class SimpleContainer implements ContainerInterface
 {

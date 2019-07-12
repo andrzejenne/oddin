@@ -1,14 +1,14 @@
 <?php
 
 
-namespace BBIT\Oddin\Utils;
+namespace BigBIT\Oddin\Utils;
 
 use Psr\Container\ContainerInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
 /**
  * Class ServiceResolver
- * @package BBIT\Oddin\Utils
+ * @package BigBIT\Oddin\Utils
  * @todo - crate custom exceptions
  */
 class ServiceResolver

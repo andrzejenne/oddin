@@ -1,15 +1,15 @@
 <?php
 
 
-namespace BBIT\Oddin\Singletons;
+namespace BigBIT\Oddin\Singletons;
 
 
-use BBIT\Oddin\Utils\ServiceResolver;
+use BigBIT\Oddin\Utils\ServiceResolver;
 use Psr\Container\ContainerInterface;
 
 /**
  * Class DIResolver
- * @package BBIT\Oddin\Singletons
+ * @package BigBIT\Oddin\Singletons
  */
 class DIResolver
 {

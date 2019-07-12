@@ -1,5 +1,5 @@
 {
-  "name": "bbit/oddin",
+  "name": "bigbit/oddin",
   "description": "On Demand Dependency InjectioN",
   "version": "0.0.1",
   "type": "library",
@@ -13,7 +13,7 @@
   "minimum-stability": "stable",
   "autoload": {
     "psr-4": {
-      "BBIT\\Oddin\\": "src/"
+      "BigBIT\\Oddin\\": "src/"
     }
   },
   "require": {
