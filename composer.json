@@ -1,7 +1,6 @@
 {
   "name": "bigbit/oddin",
   "description": "On Demand Dependency InjectioN",
-  "version": "0.0.1",
   "type": "library",
   "license": "MIT",
   "authors": [
