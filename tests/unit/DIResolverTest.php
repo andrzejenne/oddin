@@ -1,8 +1,12 @@
 <?php
 
 
+use BigBIT\Oddin\Examples\child\ChildClass;
+use BigBIT\Oddin\Examples\ExampleClass;
+use BigBIT\Oddin\Examples\ExampleService;
+use BigBIT\Oddin\Examples\ns\ExampleService as NsExampleService;
+use BigBIT\Oddin\Examples\parent\ExampleService as ParentExampleService;
 use BigBIT\Oddin\Singletons\DIResolver;
-use ns\ExampleService as NsExampleService;
 
 /**
  * Class CacheResolverTest
@@ -24,6 +28,16 @@ class DIResolverTest extends TestCase
 
         $this->assertInstanceOf(ExampleService::class, $example->service);
         $this->assertInstanceOf(NsExampleService::class, $example->exampleService);
+    }
+
+    public function testInheritance()
+    {
+        $child = new ChildClass();
+
+        $this->assertInstanceOf(ExampleService::class, $child->service1);
+        $this->assertInstanceOf(NsExampleService::class, $child->service2);
+        $this->assertInstanceOf(ParentExampleService::class, $child->parentService);
+
     }
 
 }

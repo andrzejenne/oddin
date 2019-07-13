@@ -12,7 +12,8 @@
   "minimum-stability": "stable",
   "autoload": {
     "psr-4": {
-      "BigBIT\\Oddin\\": "src/"
+      "BigBIT\\Oddin\\": "src/",
+      "BigBIT\\Oddin\\Examples\\": "examples/"
     }
   },
   "require": {
