@@ -78,7 +78,7 @@ Once property is initialized by trait, magic method is not called again.
 
 ## Pros
 * less coding
-* dependency instantiation on demand (lazy - not before constructor, if properly defined in container)
+* dependency instantiation on demand (lazy - not before constructor, if properly defined in DI container)
 
 ## Cons
 * all properties are public ? all injectables are "public"
@@ -86,6 +86,7 @@ Once property is initialized by trait, magic method is not called again.
 * annotations have to be parsed ? oh, come on, we are caching it, generator on it's way.
 
 ## Known Issues
+* only default vendor dir supported now
 * no cache generator yet
 * no code fixer yet
 
