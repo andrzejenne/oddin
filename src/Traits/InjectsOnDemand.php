@@ -14,13 +14,14 @@ use Psr\SimpleCache\InvalidArgumentException;
 trait InjectsOnDemand
 {
     /**
-     * @param $serviceName
+     * @param $propertyName
      * @return mixed|null
      * @throws InvalidArgumentException
+     * @throws \ReflectionException
      */
-    public function __get($serviceName) {
-        $this->$serviceName = DIResolver::for($this)->get($serviceName);
+    public function __get($propertyName) {
+        $this->$propertyName = DIResolver::getInjectableFor($propertyName, $this);
 
-        return $this->$serviceName;
+        return $this->$propertyName;
     }
 }

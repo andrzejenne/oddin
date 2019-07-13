@@ -4,8 +4,9 @@
 namespace BigBIT\Oddin\Singletons;
 
 
-use BigBIT\Oddin\Utils\ServiceResolver;
+use BigBIT\Oddin\Utils\CacheResolver;
 use Psr\Container\ContainerInterface;
+use Psr\SimpleCache\InvalidArgumentException;
 
 /**
  * Class DIResolver
@@ -19,8 +20,11 @@ class DIResolver
     /** @var ContainerInterface */
     private $container;
 
-    /** @var ServiceResolver[] */
-    private $resolvers;
+    /** @var string[] */
+    private $services;
+
+    /** @var CacheResolver */
+    private $cacheResolver;
 
     /**
      * Resolver constructor.
@@ -29,6 +33,8 @@ class DIResolver
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+
+        $this->services = [];
     }
 
     /**
@@ -42,23 +48,59 @@ class DIResolver
     }
 
     /**
+     * @param string $propertyName
      * @param mixed $object
-     * @return ServiceResolver
+     * @return mixed
+     * @throws InvalidArgumentException
+     * @throws \ReflectionException
      */
-    final public static function for($object) {
-        return static::$instance->getResolver($object);
+    final public static function getInjectableFor(string $propertyName, $object) {
+        return static::$instance->resolve($propertyName, get_class($object));
     }
 
     /**
-     * @param mixed $object
-     * @return ServiceResolver
+     * @param string $propertyName
+     * @param string $className
+     * @return mixed
+     * @throws InvalidArgumentException
+     * @throws \ReflectionException
+     * @throws \Exception
      */
-    private function getResolver($object) {
-        $cls = get_class($object);
-        if (!isset($this->resolvers[$cls])) {
-            $this->resolvers[$cls] = new ServiceResolver($cls, $this->container);
+    private function resolve(string $propertyName, string $className) {
+        $injectables = $this->getInjectablesFor($className);
+
+        $injectable = &$injectables[$propertyName];
+        if ($injectable) {
+            return $this->container->get($injectable);
         }
 
-        return $this->resolvers[$cls];
+        throw new \Exception("Injectable for $propertyName in $className not found");
     }
+
+    /**
+     * @param string $className
+     * @return mixed|string
+     * @throws InvalidArgumentException
+     * @throws \ReflectionException
+     */
+    private function getInjectablesFor(string $className)
+    {
+        if (!isset($this->services[$className])) {
+            $this->services[$className] = $this->getCacheResolver()->getInjectables($className);
+        }
+
+        return $this->services[$className];
+    }
+
+    /**
+     * @return CacheResolver|mixed
+     */
+    private function getCacheResolver() {
+        if (!$this->cacheResolver) {
+            $this->cacheResolver = $this->container->get(CacheResolver::class);
+        }
+
+        return $this->cacheResolver;
+    }
+
 }
