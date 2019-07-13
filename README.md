@@ -1,5 +1,5 @@
 # oddin
-On Demand Dependency InjectioN
+On Demand Dependency INjection
 
 ## About
 I'm PHP enthusiast, but sometimes, writing code can be pain, considering boss needs it now.
@@ -85,8 +85,6 @@ Once property is initialized by trait, magic method is not called again.
 * annotations have to be parsed ? oh, come on, we are caching it. 
 
 ## Known Issues
-* no parents support yet
-* no use statements support yet
 * no cache generator for production yet
 * no code fixer for production yet
 
