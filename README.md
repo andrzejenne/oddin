@@ -1,9 +1,9 @@
-# oddin
-On Demand Dependency INjection
+# oddin - On Demand Dependency INjection
 
 ## About
-I'm PHP enthusiast, but sometimes, writing code can be pain, considering boss needs it now.
-If you are using DI in your projects, you have to write property declarations and initialize theme in constructors.
+Sometimes coding is a pain. Your boss needs it now or simply you are bored writing all 
+sugar again and again and ...
+If you are using DI in your projects, you have to write property declarations and initialize them in constructors.
 You can use dependency container or define injectable constructor arguments.
 ```php
 class Foo {
@@ -69,24 +69,24 @@ class Foo {
 I assume all PHP IDEs with autocomplete will work with our approach.
 
 ## How it works
-PHP classes has magic methods. The __get magic method is called every time you want to use not inaccessible property.
-It can be undeclared or private/protected from outside.
-DIResolver uses parser to get dependency info from class property annotations.
+PHP classes has magic methods. The __get magic method is invoked every time you want to use inaccessible property.
+Property can be undeclared or private/protected from outside.
+DIResolver uses parser to get dependency necessary metadata from class property annotations.
 InjectsOnDemand trait defines magic __get method, which handles all our property requests.
 Once property is initialized by trait, magic method is not called again.
 
 ## Pros
 * less coding
-* dependency instantiation on demand (lazy), not before constructor. Depends on DI Container.
+* dependency instantiation on demand (lazy - not before constructor, if properly defined in container)
 
 ## Cons
 * all properties are public ? all injectables are "public"
-* antipattern ? use it only for sprints.
-* annotations have to be parsed ? oh, come on, we are caching it. 
+* antipattern ? use it only for sprints, clean the code later.
+* annotations have to be parsed ? oh, come on, we are caching it, generator on it's way.
 
 ## Known Issues
-* no cache generator for production yet
-* no code fixer for production yet
+* no cache generator yet
+* no code fixer yet
 
 ## @TODO - Cache Generator
 Cli command for annotation cache generation.
