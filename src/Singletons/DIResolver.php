@@ -96,7 +96,7 @@ class DIResolver
      * @return CacheResolver|mixed
      */
     private function getCacheResolver() {
-        if (!$this->cacheResolver) {
+        if ($this->cacheResolver === null) {
             $this->cacheResolver = $this->container->get(CacheResolver::class);
         }
 

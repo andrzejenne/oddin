@@ -4,8 +4,6 @@
 namespace BigBIT\Oddin\Utils;
 
 
-use Composer\Autoload\ClassLoader;
-use Composer\Composer;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
@@ -18,7 +16,7 @@ class CacheResolver
     /** @var CacheInterface */
     private $cache;
 
-    /** @var ClassReader */
+    /** @var SimpleClassReader */
     private $reader;
 
     /** @var ClassMapResolver */
@@ -44,7 +42,9 @@ class CacheResolver
      * @throws InvalidArgumentException
      */
     public function hasInjectables(string $className): bool {
-        return isset($this->classMap[$className]);
+        $classMap = $this->getClassMap();
+
+        return isset($classMap[$className]);
     }
 
     /**
@@ -85,11 +85,11 @@ class CacheResolver
     }
 
     /**
-     * @return ClassReader
+     * @return SimpleClassReader
      */
     private function getAnnotationReader() {
-        if (!$this->reader) {
-            $this->reader = new ClassReader($this->classMapResolver);
+        if ($this->reader === null) {
+            $this->reader = new SimpleClassReader($this->classMapResolver);
         }
 
         return $this->reader;
