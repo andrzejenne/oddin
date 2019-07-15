@@ -83,7 +83,7 @@ Once property is initialized by trait, magic method is not called again.
 ## Cons
 * all properties are public ? all injectables are "public"
 * antipattern ? use it only for prototyping, clean the code later.
-* annotations have to be parsed ? oh, come on, we are caching it, generator on it's way.
+* annotations have to be parsed ? oh, come on, we are caching it, generator planned.
 
 ## Known Issues
 * only default vendor dir supported now
