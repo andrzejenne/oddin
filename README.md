@@ -85,6 +85,9 @@ Once property is initialized by trait, magic method is not called again.
 * antipattern ? use it only for prototyping, clean the code later.
 * annotations have to be parsed ? oh, come on, we are caching it, generator planned.
 
+## Purpouse
+Cleaner controller classes, less resource demanding. But it's up to you, where you use ODDIN.
+
 ## Known Issues
 * only default vendor dir supported now
 * no cache generator yet
