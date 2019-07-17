@@ -30,6 +30,6 @@
 
   "scripts": {
     "test": "phpunit --configuration config/phpunit.xml",
-    "stan": "phpstan analyse src --level 7 -c config/phpstan.neon"
+    "stan": "phpstan analyse --level 7 -c config/phpstan.neon src examples"
   }
 }

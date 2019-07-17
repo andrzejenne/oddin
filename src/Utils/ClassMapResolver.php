@@ -52,7 +52,7 @@ class ClassMapResolver
      */
     public function getClassLoader()
     {
-        if (!$this->classLoader) {
+        if ($this->classLoader === null) {
             $loader = new ClassLoader();
             $composerDir = $this->rootDir . DIRECTORY_SEPARATOR . 'vendor'
                 . DIRECTORY_SEPARATOR . 'composer'

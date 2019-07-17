@@ -1,10 +1,11 @@
-# oddin
-On Demand Dependency INjection
+# ODDIN - On Demand Dependency INjection
 
 ## About
-I'm PHP enthusiast, but sometimes, writing code can be pain, considering boss needs it now.
-If you are using DI in your projects, you have to write property declarations and initialize theme in constructors.
-You can use dependency container or define injectable constructor arguments.
+Sometimes coding is a pain. Your boss needs it now or simply you are bored writing all 
+sugar again and again and ...
+
+If you are using DI in your projects, you have to write property declarations and initialize them in constructors.
+You can use dependency container or define injectable constructor arguments. It depends on framework used.
 ```php
 class Foo {
     /** @var Dependency1 */
@@ -40,7 +41,7 @@ class Foo {
 }
 
 ```
-With oddin you can skip declaration and constructor part. Just add class property annotations and access properties anytime you need. 
+With ODDIN you can skip declaration and constructor part. Just add class property annotations and access properties anytime you need. 
 ```php
 /**
  * @property Dependency1 $dep1
@@ -66,27 +67,34 @@ class Foo {
     }
 }
 ```
-I assume all PHP IDEs with autocomplete will work with our approach.
+I assume all PHP IDEs with autocomplete will work with ODDIN approach.
 
 ## How it works
-PHP classes has magic methods. The __get magic method is called every time you want to use not inaccessible property.
-It can be undeclared or private/protected from outside.
-DIResolver uses parser to get dependency info from class property annotations.
+PHP classes can have magic methods. The __get magic method is invoked every time you want to use inaccessible property.
+Property can be undeclared or private/protected from outside.
+DIResolver uses parser to get dependency metadata from class property annotations.
 InjectsOnDemand trait defines magic __get method, which handles all our property requests.
 Once property is initialized by trait, magic method is not called again.
 
+## PHP-DI comparison
+@todo
+
 ## Pros
 * less coding
-* dependency instantiation on demand (lazy), not before constructor. Depends on DI Container.
+* dependency instantiation on demand (lazy - not before constructor, if properly defined in DI container)
 
 ## Cons
 * all properties are public ? all injectables are "public"
-* antipattern ? use it only for sprints.
-* annotations have to be parsed ? oh, come on, we are caching it. 
+* antipattern ? use it only for prototyping, clean the code later.
+* annotations have to be parsed ? oh, come on, we are caching it, generator planned.
+
+## Purpouse
+Cleaner controller classes, less resource demanding. But it's up to you, where you use ODDIN.
 
 ## Known Issues
-* no cache generator for production yet
-* no code fixer for production yet
+* only default vendor dir supported now
+* no cache generator yet
+* no code fixer yet
 
 ## @TODO - Cache Generator
 Cli command for annotation cache generation.

@@ -7,7 +7,7 @@ namespace BigBIT\Oddin\Utils;
  * Class PropertyAnnotationReader
  * @package BigBIT\Oddin\Utils
  */
-class ClassReader
+class SimpleClassReader
 {
     const PROPERTY_REG = '/@property\s+([^\s\$]+)\s+\$([\w\d]+)/',
         USE_REG = '/use\s+([^\s;]+)(?:\s+as\s+([^;]+))?/';
@@ -77,7 +77,6 @@ class ClassReader
 
     /**
      * @param string $line
-     * @param string $namespace
      * @return null|array
      */
     private function getPropertyFromLine(string $line): ?array
@@ -96,12 +95,16 @@ class ClassReader
      * @return array
      * @throws \Exception
      */
-    private function getUseStatements(string $className)
+    private function getUseStatements(string $className): array
     {
         $classPath = $this->classMapResolver->getClassPath($className);
         $content = file_get_contents($classPath);
 
-        return $this->getUseStatementsFromContent($content);
+        if ($content) {
+            return $this->getUseStatementsFromContent($content);
+        }
+
+        return [];
     }
 
     /**

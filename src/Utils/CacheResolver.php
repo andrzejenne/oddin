@@ -16,7 +16,7 @@ class CacheResolver
     /** @var CacheInterface */
     private $cache;
 
-    /** @var ClassReader */
+    /** @var SimpleClassReader */
     private $reader;
 
     /** @var ClassMapResolver */
@@ -41,7 +41,9 @@ class CacheResolver
      * @return bool
      */
     public function hasInjectables(string $className): bool {
-        return isset($this->classMap[$className]);
+        $classMap = $this->getClassMap();
+
+        return isset($classMap[$className]);
     }
 
     /**
@@ -61,11 +63,16 @@ class CacheResolver
     }
 
     /**
+     * @throws InvalidArgumentException
+     */
+    public function shutDown() {
+        $this->cache->set('classMap', $this->classMap);
+    }
+
+    /**
      * @param string $className
      * @return array
      * @throws \ReflectionException
-     * @throws InvalidArgumentException
-     * @throws \Exception
      */
     private function resolveInjectables(string $className): array {
         $reflection = new \ReflectionClass($className);
@@ -76,17 +83,15 @@ class CacheResolver
 
         $this->classMap[$className] = $properties;
 
-        $this->cache->set('classMap', $this->classMap);
-
         return $properties;
     }
 
     /**
-     * @return ClassReader
+     * @return SimpleClassReader
      */
     private function getAnnotationReader() {
-        if (!$this->reader) {
-            $this->reader = new ClassReader($this->classMapResolver);
+        if ($this->reader === null) {
+            $this->reader = new SimpleClassReader($this->classMapResolver);
         }
 
         return $this->reader;
@@ -106,5 +111,4 @@ class CacheResolver
 
         return $this->classMap;
     }
-
 }

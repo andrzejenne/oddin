@@ -34,6 +34,10 @@ class DIResolver
     {
         $this->container = $container;
 
+        register_shutdown_function(function () {
+            $this->shutDown();
+        });
+
         $this->services = [];
     }
 
@@ -41,7 +45,8 @@ class DIResolver
      * @param ContainerInterface $container
      * @return DIResolver
      */
-    final public static function create(ContainerInterface $container) {
+    final public static function create(ContainerInterface $container)
+    {
         static::$instance = new static($container);
 
         return static::$instance;
@@ -54,7 +59,8 @@ class DIResolver
      * @throws InvalidArgumentException
      * @throws \ReflectionException
      */
-    final public static function getInjectableFor(string $propertyName, $object) {
+    final public static function getInjectableFor(string $propertyName, $object)
+    {
         return static::$instance->resolve($propertyName, get_class($object));
     }
 
@@ -66,7 +72,8 @@ class DIResolver
      * @throws \ReflectionException
      * @throws \Exception
      */
-    private function resolve(string $propertyName, string $className) {
+    private function resolve(string $propertyName, string $className)
+    {
         $injectables = $this->getInjectablesFor($className);
 
         $injectable = &$injectables[$propertyName];
@@ -95,12 +102,22 @@ class DIResolver
     /**
      * @return CacheResolver|mixed
      */
-    private function getCacheResolver() {
-        if (!$this->cacheResolver) {
+    private function getCacheResolver()
+    {
+        if ($this->cacheResolver === null) {
             $this->cacheResolver = $this->container->get(CacheResolver::class);
         }
 
         return $this->cacheResolver;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function shutDown()
+    {
+        if ($this->cacheResolver) {
+            $this->cacheResolver->shutDown();
+        }
+    }
 }
