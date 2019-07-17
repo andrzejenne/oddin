@@ -76,6 +76,9 @@ DIResolver uses parser to get dependency metadata from class property annotation
 InjectsOnDemand trait defines magic __get method, which handles all our property requests.
 Once property is initialized by trait, magic method is not called again.
 
+## PHP-DI comparison
+@todo
+
 ## Pros
 * less coding
 * dependency instantiation on demand (lazy - not before constructor, if properly defined in DI container)

@@ -64,11 +64,16 @@ class CacheResolver
     }
 
     /**
+     * @throws InvalidArgumentException
+     */
+    public function shutDown() {
+        $this->cache->set('classMap', $this->classMap);
+    }
+
+    /**
      * @param string $className
      * @return array
      * @throws \ReflectionException
-     * @throws InvalidArgumentException
-     * @throws \Exception
      */
     private function resolveInjectables(string $className): array {
         $reflection = new \ReflectionClass($className);
@@ -78,8 +83,6 @@ class CacheResolver
         $properties = $reader->getProperties($reflection);
 
         $this->classMap[$className] = $properties;
-
-        $this->cache->set('classMap', $this->classMap);
 
         return $properties;
     }
@@ -109,5 +112,4 @@ class CacheResolver
 
         return $this->classMap;
     }
-
 }
