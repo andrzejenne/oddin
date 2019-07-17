@@ -4,8 +4,6 @@
 namespace BigBIT\Oddin\Utils;
 
 
-use Composer\Autoload\ClassLoader;
-use Composer\Composer;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
@@ -41,7 +39,6 @@ class CacheResolver
     /**
      * @param string $className
      * @return bool
-     * @throws InvalidArgumentException
      */
     public function hasInjectables(string $className): bool {
         return isset($this->classMap[$className]);
