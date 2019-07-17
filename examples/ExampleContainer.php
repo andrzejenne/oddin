@@ -6,6 +6,7 @@ namespace BigBIT\Oddin\Examples;
 
 use BigBIT\Oddin\Examples\exceptions\CannotResolveException;
 use BigBIT\Oddin\Examples\exceptions\DefinitionNotFoundException;
+use PHPStan\Reflection\ClassReflection;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -33,12 +34,10 @@ class ExampleContainer implements ContainerInterface, \ArrayAccess
             if (isset($this->definitions[$id])) {
                 try {
                     $this->instances[$id] = $this->definitions[$id]($this);
-                }
-                catch (\Throwable $throwable) {
+                } catch (\Throwable $throwable) {
                     throw new CannotResolveException($id, 0, $throwable);
                 }
-            }
-            else {
+            } else {
                 throw new DefinitionNotFoundException($id);
             }
         }
@@ -49,9 +48,14 @@ class ExampleContainer implements ContainerInterface, \ArrayAccess
     /**
      * @param string $id
      * @return bool
+     * @throws \Exception
      */
     public function has($id)
     {
+        if (!isset($this->definitions[$id])) {
+            $this->tryAutoWire($id);
+        };
+
         return isset($this->definitions[$id]);
     }
 
@@ -59,7 +63,8 @@ class ExampleContainer implements ContainerInterface, \ArrayAccess
      * @param string $id
      * @param mixed $instance
      */
-    public function bind($id, $instance) {
+    public function bind($id, $instance)
+    {
         $this->instances[$id] = $instance;
         $this->definitions[$id] = true;
     }
@@ -67,6 +72,7 @@ class ExampleContainer implements ContainerInterface, \ArrayAccess
     /**
      * @param mixed $offset
      * @return bool
+     * @throws \Exception
      */
     public function offsetExists($offset)
     {
@@ -110,5 +116,71 @@ class ExampleContainer implements ContainerInterface, \ArrayAccess
     public function offsetUnset($offset)
     {
         throw new \Exception('No unset ;)');
+    }
+
+    /**
+     * @param string $id
+     * @throws \Exception
+     */
+    private function tryAutoWire(string $id)
+    {
+        if (class_exists($id)) {
+
+            $this[$id] = function () use ($id) {
+                $dependencies = $this->getDependenciesFor($id);
+
+                return new $id(...$dependencies);
+            };
+        } else {
+            throw new \Exception("Class $id not exists, cannot auto wire");
+        }
+    }
+
+    /**
+     * @param string $id
+     * @throws CannotResolveException
+     * @throws DefinitionNotFoundException
+     * @throws \ReflectionException
+     * @throws \Exception
+     */
+    private function getDependenciesFor(string $id) {
+        $reflection = new \ReflectionClass($id);
+
+        $constructor = $reflection->getConstructor();
+
+        $parameters = $constructor->getParameters();
+
+        $dependencies = [];
+
+        foreach ($parameters as $parameter) {
+            $type = $parameter->getType();
+            if (!$type) {
+                throw new \Exception("Parameter " . $parameter->getName() . " has no type specified, cannot auto wire");
+            } else {
+                if ($type->allowsNull()) {
+                    $dependencies[] = null;
+                } else {
+                    $typeName = $type->getName();
+
+                    if ($typeName) {
+                        if ($type->isBuiltin()) {
+                            throw new \Exception("Cannot auto wire builtin type " . $type->getName() . " in $id");
+                        } else {
+                            if ($this->has($typeName)) {
+                                $dependencies[] = $this->get($typeName);
+                            } else {
+                                throw new \Exception("Cannot auto wire unknown type $typeName for $id");
+                            }
+                        }
+                    } else {
+                        throw new \Exception("Cannot continue, no type name specified for $id");
+                    }
+
+                }
+
+            }
+        }
+
+        return $dependencies;
     }
 }
