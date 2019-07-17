@@ -27,10 +27,15 @@ class ExampleContainer implements ContainerInterface, \ArrayAccess
      * @return mixed
      * @throws DefinitionNotFoundException
      * @throws CannotResolveException
+     * @throws \Exception
      */
     public function get($id)
     {
         if (!isset($this->instances[$id])) {
+            if (!isset($this->definitions[$id])) {
+                $this->tryAutoWire($id);
+            }
+
             if (isset($this->definitions[$id])) {
                 try {
                     $this->instances[$id] = $this->definitions[$id]($this);
@@ -138,6 +143,7 @@ class ExampleContainer implements ContainerInterface, \ArrayAccess
 
     /**
      * @param string $id
+     * @return array
      * @throws CannotResolveException
      * @throws DefinitionNotFoundException
      * @throws \ReflectionException
