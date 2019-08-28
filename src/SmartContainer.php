@@ -81,7 +81,11 @@ class SmartContainer implements ContainerInterface, \ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return $this->has($offset);
+        try {
+            return $this->has($offset);
+        } catch (DefinitionNotFoundException $dnfe) {
+            return false;
+        }
     }
 
     /**
