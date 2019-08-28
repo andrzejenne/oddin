@@ -9,8 +9,8 @@ use Slim\DefaultServicesProvider;
  * @package BigBIT\Oddin\Support
  */
 class SlimBootstrap extends Bootstrap {
-    final protected static function boot() {
-        parent::boot();
+    final protected static function boot(array $bindings) {
+        parent::boot($bindings);
         $serviceProvider = new DefaultServicesProvider();
 
         $serviceProvider->register(static::$container);
