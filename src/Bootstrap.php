@@ -19,7 +19,7 @@ class Bootstrap
      * @return SmartContainer
      */
     public static function getContainer() {
-        if (!static::$container) {
+        if (null === static::$container) {
             static::boot();
         }
 
