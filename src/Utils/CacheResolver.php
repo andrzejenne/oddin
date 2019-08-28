@@ -74,6 +74,7 @@ class CacheResolver
      * @param string $className
      * @return array
      * @throws \ReflectionException
+     * @throws \Exception
      */
     private function resolveInjectables(string $className): array {
         $reflection = new \ReflectionClass($className);

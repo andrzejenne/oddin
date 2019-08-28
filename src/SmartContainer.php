@@ -1,23 +1,25 @@
 <?php
 
 
-namespace BigBIT\Oddin\Examples;
+namespace BigBIT\Oddin;
 
 
-use BigBIT\Oddin\Examples\exceptions\CannotResolveException;
-use BigBIT\Oddin\Examples\exceptions\DefinitionNotFoundException;
-use PHPStan\Reflection\ClassReflection;
+use BigBIT\Oddin\Exceptions\CannotResolveException;
+use BigBIT\Oddin\Exceptions\DefinitionNotFoundException;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class ExampleContainer
+ * Class SmartContainer
  * @package BigBIT\Oddin\Examples
  */
-class ExampleContainer implements ContainerInterface, \ArrayAccess
+class SmartContainer implements ContainerInterface, \ArrayAccess
 {
 
     /** @var array */
     private $definitions = [];
+
+    /** @var array */
+    private $dependencies = [];
 
     /** @var array */
     private $instances = [];
@@ -27,10 +29,15 @@ class ExampleContainer implements ContainerInterface, \ArrayAccess
      * @return mixed
      * @throws DefinitionNotFoundException
      * @throws CannotResolveException
+     * @throws \Exception
      */
     public function get($id)
     {
         if (!isset($this->instances[$id])) {
+            if (!isset($this->definitions[$id])) {
+                $this->tryAutoWire($id);
+            };
+
             if (isset($this->definitions[$id])) {
                 try {
                     $this->instances[$id] = $this->definitions[$id]($this);
@@ -125,7 +132,6 @@ class ExampleContainer implements ContainerInterface, \ArrayAccess
     private function tryAutoWire(string $id)
     {
         if (class_exists($id)) {
-
             $this[$id] = function () use ($id) {
                 $dependencies = $this->getDependenciesFor($id);
 
@@ -138,46 +144,50 @@ class ExampleContainer implements ContainerInterface, \ArrayAccess
 
     /**
      * @param string $id
+     * @return array
      * @throws CannotResolveException
      * @throws DefinitionNotFoundException
      * @throws \ReflectionException
      * @throws \Exception
      */
-    private function getDependenciesFor(string $id) {
+    private function getDependenciesFor(string $id): array
+    {
         $reflection = new \ReflectionClass($id);
 
         $constructor = $reflection->getConstructor();
 
-        $parameters = $constructor->getParameters();
-
         $dependencies = [];
 
-        foreach ($parameters as $parameter) {
-            $type = $parameter->getType();
-            if (!$type) {
-                throw new \Exception("Parameter " . $parameter->getName() . " has no type specified, cannot auto wire");
-            } else {
-                if ($type->allowsNull()) {
-                    $dependencies[] = null;
-                } else {
-                    $typeName = $type->getName();
+        if ($constructor) {
+            $parameters = $constructor->getParameters();
 
-                    if ($typeName) {
-                        if ($type->isBuiltin()) {
-                            throw new \Exception("Cannot auto wire builtin type " . $type->getName() . " in $id");
-                        } else {
-                            if ($this->has($typeName)) {
-                                $dependencies[] = $this->get($typeName);
-                            } else {
-                                throw new \Exception("Cannot auto wire unknown type $typeName for $id");
-                            }
-                        }
+            foreach ($parameters as $parameter) {
+                $type = $parameter->getType();
+                if (!$type) {
+                    throw new \Exception("Parameter " . $parameter->getName() . " has no type specified, cannot auto wire");
+                } else {
+                    if ($type->allowsNull()) {
+                        $dependencies[] = null;
                     } else {
-                        throw new \Exception("Cannot continue, no type name specified for $id");
+                        $typeName = $type->getName();
+
+                        if ($typeName) {
+                            if ($type->isBuiltin()) {
+                                throw new \Exception("Cannot auto wire builtin type " . $type->getName() . " in $id");
+                            } else {
+                                if ($this->has($typeName)) {
+                                    $dependencies[] = $this->get($typeName);
+                                } else {
+                                    throw new \Exception("Cannot auto wire unknown type $typeName for $id");
+                                }
+                            }
+                        } else {
+                            throw new \Exception("Cannot continue, no type name specified for $id");
+                        }
+
                     }
 
                 }
-
             }
         }
 

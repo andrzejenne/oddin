@@ -1,7 +1,7 @@
 <?php
 
 
-namespace BigBIT\Oddin\Examples\exceptions;
+namespace BigBIT\Oddin\Exceptions;
 
 
 use Psr\Container\ContainerExceptionInterface;

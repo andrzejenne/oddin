@@ -57,16 +57,7 @@ class SimpleClassReader
             foreach ($lines as $line) {
                 $property = $this->getPropertyFromLine($line);
                 if ($property) {
-                    if (isset($statements[$property[0]])) {
-                        $cls = $statements[$property[0]];
-                    } else {
-                        if ($this->classMapResolver->getClassPath($property[0])) {
-                            $cls = $property[0];
-                        } else {
-                            $cls = $namespace . '\\' . $property[0];
-                        }
-                    }
-                    $properties[$property[1]] = $cls;
+                    $properties[$property[1]] = $this->getPropertyClassWithNameSpace($property, $statements, $namespace);
                 }
             }
 
@@ -150,4 +141,22 @@ class SimpleClassReader
         return null;
     }
 
+    /**
+     * @param array $property
+     * @param array $statements
+     * @param string $namespace
+     * @return mixed|string
+     * @throws \Exception
+     */
+    private function getPropertyClassWithNameSpace(array $property, array $statements, string $namespace) {
+        if (isset($statements[$property[0]])) {
+            return $statements[$property[0]];
+        } else {
+            if ($this->classMapResolver->getClassPath($property[0])) {
+                return $property[0];
+            } else {
+                return $namespace . '\\' . $property[0];
+            }
+        }
+    }
 }
