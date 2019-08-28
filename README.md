@@ -101,7 +101,7 @@ Cleaner controller classes, less resource demanding. But it's up to you, where y
 ## Quick start
 You can use any DI container, which implements Psr\Container\ContainerInterface.
 For quick start, you can use Bootstrap class, which uses SmartContainer.
-```
+```php
 use BigBIT\Oddin\Bootstrap;
 use Psr\Container\ContainerInterface;
 
@@ -121,7 +121,7 @@ $app->run();
 ```
 ### Slim v3
 For slim version 3 support bootstrap was added.
-```
+```php
 use BigBIT\Oddin\Support\Slim3Bootstrap;
 use Psr\Container\ContainerInterface;
 
@@ -138,18 +138,18 @@ You can request other frameworks support or write you own bootstrap based on Boo
 @todo
 
 ## Cache Generator
-Experimental implementation of cache gerenator was added. If your project has phpstan installed, it's recommended
+Experimental implementation of cache generator was added. If your project has phpstan installed, it's recommended
 to install tracy/tracy as well.
 Oddin uses Psr\SimpleCache\CacheInterface implementations and Symfony as default.
 
 Creating cache is not necessary, but recommended for production environments:
-```
+```bash
 vendor/bin/oddin cache:injectables:create php-files -a oddin -a 0 -a cache
 ```
 Arguments for cli commands are derived from adapter constructor.
 
 Instantiating cache:
-```
+```php
 $bindings[CacheInterface::class] = function(ContainerInterface $container) {
     return new Psr16Cache(new PhpFilesAdapter('oddin', 0, dirname(__DIR__) . '/cache'));
 };
