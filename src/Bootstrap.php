@@ -64,7 +64,10 @@ class Bootstrap
                 return new ClassMapResolver(static::$autoloadPath);
             },
             CacheResolver::class => function (ContainerInterface $container) {
-                return new CacheResolver($container[ClassMapResolver::class], $container[CacheInterface::class]);
+                return new CacheResolver(
+                    $container->get(ClassMapResolver::class),
+                    $container->get(CacheInterface::class)
+                );
             },
         ];
     }
