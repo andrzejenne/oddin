@@ -76,8 +76,10 @@ DIResolver uses parser to get dependency metadata from class property annotation
 InjectsOnDemand trait defines magic __get method, which handles all our property requests.
 Once property is initialized by trait, magic method is not called again.
 
-## PHP-DI comparison
-@todo
+## Builtin SmartContainer
+This DI Container can automagically instantiate classes. This helps to avoid class map definitions.
+There are special use cases, where you have to manually define class maps.
+@todo - research configuration possibilities to help deal with such use cases.
 
 ## Pros
 * less coding
@@ -96,8 +98,62 @@ Cleaner controller classes, less resource demanding. But it's up to you, where y
 * no cache generator yet
 * no code fixer yet
 
-## @TODO - Cache Generator
-Cli command for annotation cache generation.
+## Quick start
+You can use any DI container, which implements Psr\Container\ContainerInterface.
+For quick start, you can use Bootstrap class, which uses SmartContainer.
+```
+use BigBIT\Oddin\Bootstrap;
+use Psr\Container\ContainerInterface;
+
+// custom bindings
+$bindings = [
+    FooInterface::class => function(ContainerInterface $container) {
+    return new BarImplementation(
+        $container->get(BazDependency::class)
+    );
+];
+
+$container = Bootstrap::getContainer($bindings);
+
+$app = new SomeApp($container);
+
+$app->run();
+```
+### Slim v3
+For slim version 3 support bootstrap was added.
+```
+use BigBIT\Oddin\Support\Slim3Bootstrap;
+use Psr\Container\ContainerInterface;
+
+$container = Slim3Bootstrap::getContainer($bindings);
+
+$app = new Slim\App($container);
+
+$app->run();
+```
+### Other frameworks
+You can request other frameworks support or write you own bootstrap based on Bootstrap class.
+
+## PHP-DI comparison
+@todo
+
+## Cache Generator
+Experimental implementation of cache gerenator was added. If your project has phpstan installed, it's recommended
+to install tracy/tracy as well.
+Oddin uses Psr\SimpleCache\CacheInterface implementations and Symfony as default.
+
+Creating cache is not necessary, but recommended for production environments:
+```
+vendor/bin/oddin cache:injectables:create php-files -a oddin -a 0 -a cache
+```
+Arguments for cli commands are derived from adapter constructor.
+
+Instantiating cache:
+```
+$bindings[CacheInterface::class] = function(ContainerInterface $container) {
+    return new Psr16Cache(new PhpFilesAdapter('oddin', 0, dirname(__DIR__) . '/cache'));
+};
+```
 
 ## @TODO - Code Fixer
 Cli command for fixing code. It will remove class property annotations, 
