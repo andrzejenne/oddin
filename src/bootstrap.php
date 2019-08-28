@@ -5,5 +5,9 @@ use BigBIT\Oddin\Singletons\DIResolver;
 
 require ('vendor/autoload.php');
 
-DIResolver::create(new SmartContainer());
+$container = new SmartContainer();
+
+DIResolver::create($container);
+
+return $container;
 
