@@ -11,15 +11,13 @@ use Psr\Container\ContainerInterface;
 /**
  * Class SmartContainer
  * @package BigBIT\Oddin\Examples
+ * @todo - create dedicated exceptions
  */
 class SmartContainer implements ContainerInterface, \ArrayAccess
 {
 
     /** @var array */
     private $definitions = [];
-
-    /** @var array */
-    private $dependencies = [];
 
     /** @var array */
     private $instances = [];
@@ -36,7 +34,7 @@ class SmartContainer implements ContainerInterface, \ArrayAccess
         if (!isset($this->instances[$id])) {
             if (!isset($this->definitions[$id])) {
                 $this->tryAutoWire($id);
-            };
+            }
 
             if (isset($this->definitions[$id])) {
                 try {
@@ -132,6 +130,7 @@ class SmartContainer implements ContainerInterface, \ArrayAccess
     private function tryAutoWire(string $id)
     {
         if (class_exists($id)) {
+
             $this[$id] = function () use ($id) {
                 $dependencies = $this->getDependenciesFor($id);
 
@@ -150,43 +149,42 @@ class SmartContainer implements ContainerInterface, \ArrayAccess
      * @throws \ReflectionException
      * @throws \Exception
      */
-    private function getDependenciesFor(string $id): array
-    {
+    private function getDependenciesFor(string $id) {
         $reflection = new \ReflectionClass($id);
 
         $constructor = $reflection->getConstructor();
 
+        if (!$constructor) {
+            return [];
+        }
+
+        $parameters = $constructor->getParameters();
+
         $dependencies = [];
 
-        if ($constructor) {
-            $parameters = $constructor->getParameters();
-
-            foreach ($parameters as $parameter) {
-                $type = $parameter->getType();
-                if (!$type) {
-                    throw new \Exception("Parameter " . $parameter->getName() . " has no type specified, cannot auto wire");
+        foreach ($parameters as $parameter) {
+            $type = $parameter->getType();
+            if (!$type) {
+                throw new \Exception("Parameter " . $parameter->getName() . " has no type specified, cannot auto wire");
+            } else {
+                if ($type->allowsNull()) {
+                    $dependencies[] = null;
                 } else {
-                    if ($type->allowsNull()) {
-                        $dependencies[] = null;
-                    } else {
-                        $typeName = $type->getName();
+                    $typeName = $type->getName();
 
-                        if ($typeName) {
-                            if ($type->isBuiltin()) {
-                                throw new \Exception("Cannot auto wire builtin type " . $type->getName() . " in $id");
-                            } else {
-                                if ($this->has($typeName)) {
-                                    $dependencies[] = $this->get($typeName);
-                                } else {
-                                    throw new \Exception("Cannot auto wire unknown type $typeName for $id");
-                                }
-                            }
+                    if ($typeName) {
+                        if ($type->isBuiltin()) {
+                            throw new \Exception("Cannot auto wire builtin type " . $type->getName() . " in $id");
                         } else {
-                            throw new \Exception("Cannot continue, no type name specified for $id");
+                            if ($this->has($typeName)) {
+                                $dependencies[] = $this->get($typeName);
+                            } else {
+                                throw new \Exception("Cannot auto wire unknown type $typeName for $id");
+                            }
                         }
-
+                    } else {
+                        throw new \Exception("Cannot continue, no type name specified for $id");
                     }
-
                 }
             }
         }

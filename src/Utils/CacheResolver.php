@@ -6,6 +6,8 @@ namespace BigBIT\Oddin\Utils;
 
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Psr16Cache;
 
 /**
  * Class CacheResolver
@@ -27,12 +29,15 @@ class CacheResolver
 
     /**
      * CacheResolver constructor.
-     * @param CacheInterface $cache
      * @param ClassMapResolver $classMapResolver
+     * @param CacheInterface $cache
      */
-    public function __construct(CacheInterface $cache, ClassMapResolver $classMapResolver)
+    public function __construct(ClassMapResolver $classMapResolver, CacheInterface $cache = null)
     {
-        $this->cache = $cache;
+        if ($cache) {
+            $this->setCache($cache);
+        }
+
         $this->classMapResolver = $classMapResolver;
     }
 
@@ -41,10 +46,19 @@ class CacheResolver
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function hasInjectables(string $className): bool {
+    public function hasInjectables(string $className): bool
+    {
         $classMap = $this->getClassMap();
 
         return isset($classMap[$className]);
+    }
+
+    /**
+     * @param CacheInterface $cache
+     */
+    public function setCache(CacheInterface $cache)
+    {
+        $this->cache = $cache;
     }
 
     /**
@@ -53,7 +67,8 @@ class CacheResolver
      * @throws InvalidArgumentException
      * @throws \ReflectionException
      */
-    public function getInjectables(string $className) {
+    public function getInjectables(string $className)
+    {
         if (!$this->hasInjectables($className)) {
             $injectables = $this->resolveInjectables($className);
         } else {
@@ -66,8 +81,9 @@ class CacheResolver
     /**
      * @throws InvalidArgumentException
      */
-    public function shutDown() {
-        $this->cache->set('classMap', $this->classMap);
+    public function shutDown()
+    {
+        $this->getCache()->set('classMap', $this->classMap);
     }
 
     /**
@@ -76,10 +92,11 @@ class CacheResolver
      * @throws \ReflectionException
      * @throws \Exception
      */
-    private function resolveInjectables(string $className): array {
+    private function resolveInjectables(string $className): array
+    {
         $reflection = new \ReflectionClass($className);
 
-        $reader = $this->getAnnotationReader();
+        $reader = $this->getClassReader();
 
         $properties = $reader->getProperties($reflection);
 
@@ -91,7 +108,8 @@ class CacheResolver
     /**
      * @return SimpleClassReader
      */
-    private function getAnnotationReader() {
+    private function getClassReader()
+    {
         if ($this->reader === null) {
             $this->reader = new SimpleClassReader($this->classMapResolver);
         }
@@ -103,14 +121,27 @@ class CacheResolver
      * @return array|mixed
      * @throws InvalidArgumentException
      */
-    private function getClassMap() {
-        if ($this->cache->has('classMap')) {
-            $this->classMap = $this->cache->get('classMap');
-        }
-        else {
-            $this->classMap = [];
+    private function getClassMap()
+    {
+        if (!$this->classMap) {
+            if ($this->getCache()->has('classMap')) {
+                $this->classMap = $this->cache->get('classMap');
+            } else {
+                $this->classMap = [];
+            }
         }
 
         return $this->classMap;
+    }
+
+    /**
+     * @return CacheInterface|Psr16Cache
+     */
+    private function getCache() {
+        if (null === $this->cache) {
+            $this->cache = new Psr16Cache(new ArrayAdapter());
+        }
+
+        return $this->cache;
     }
 }

@@ -25,12 +25,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
 
         $this->container[CacheResolver::class] = function (ContainerInterface $container) {
             return new CacheResolver(
-                $container[CacheInterface::class],
-                new ClassMapResolver(
-                    realpath(__DIR__ . DIRECTORY_SEPARATOR
-                        . '..' . DIRECTORY_SEPARATOR
-                        . '..' . DIRECTORY_SEPARATOR)
-                )
+                new ClassMapResolver(), $container[CacheInterface::class]
             );
         };
     }

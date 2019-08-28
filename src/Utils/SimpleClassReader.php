@@ -89,10 +89,13 @@ class SimpleClassReader
     private function getUseStatements(string $className): array
     {
         $classPath = $this->classMapResolver->getClassPath($className);
-        $content = file_get_contents($classPath);
 
-        if ($content) {
-            return $this->getUseStatementsFromContent($content);
+        if (file_exists($classPath)) {
+            $content = @file_get_contents($classPath);
+
+            if ($content) {
+                return $this->getUseStatementsFromContent($content);
+            }
         }
 
         return [];

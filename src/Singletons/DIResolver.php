@@ -116,7 +116,7 @@ class DIResolver
      */
     private function shutDown()
     {
-        if ($this->cacheResolver) {
+        if ($this->cacheResolver instanceof CacheResolver) {
             $this->cacheResolver->shutDown();
         }
     }

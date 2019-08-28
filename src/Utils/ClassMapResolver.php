@@ -16,19 +16,14 @@ class ClassMapResolver
     /** @var ClassLoader */
     private $classLoader;
 
-    /** @var string */
-    private $rootDir;
-
     /** @var array */
     private $classMap;
 
     /**
      * ClassMapResolver constructor.
-     * @param string $rootDir
      */
-    public function __construct(string $rootDir)
+    public function __construct()
     {
-        $this->rootDir = $rootDir;
         $this->classMap = [];
     }
 
@@ -53,27 +48,7 @@ class ClassMapResolver
     public function getClassLoader()
     {
         if ($this->classLoader === null) {
-            $loader = new ClassLoader();
-            $composerDir = $this->rootDir . DIRECTORY_SEPARATOR . 'vendor'
-                . DIRECTORY_SEPARATOR . 'composer'
-                . DIRECTORY_SEPARATOR;
-
-            $map = require $composerDir . 'autoload_namespaces.php';
-            foreach ($map as $namespace => $path) {
-                $loader->set($namespace, $path);
-            }
-
-            $map = require $composerDir . 'autoload_psr4.php';
-            foreach ($map as $namespace => $path) {
-                $loader->setPsr4($namespace, $path);
-            }
-
-            $classMap = require $composerDir . 'autoload_classmap.php';
-            if ($classMap) {
-                $loader->addClassMap($classMap);
-            }
-
-            $this->classLoader = $loader;
+            $this->classLoader = require('vendor/autoload.php');
         }
 
         return $this->classLoader;
