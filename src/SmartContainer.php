@@ -5,6 +5,7 @@ namespace BigBIT\Oddin;
 
 
 use BigBIT\Oddin\Exceptions\CannotResolveException;
+use BigBIT\Oddin\Exceptions\ClassNotFoundException;
 use BigBIT\Oddin\Exceptions\DefinitionNotFoundException;
 use Psr\Container\ContainerInterface;
 
@@ -83,7 +84,7 @@ class SmartContainer implements ContainerInterface, \ArrayAccess
     {
         try {
             return $this->has($offset);
-        } catch (DefinitionNotFoundException $dnfe) {
+        } catch (ClassNotFoundException $dnfe) {
             return false;
         }
     }
@@ -134,14 +135,13 @@ class SmartContainer implements ContainerInterface, \ArrayAccess
     private function tryAutoWire(string $id)
     {
         if (class_exists($id)) {
-
             $this[$id] = function () use ($id) {
                 $dependencies = $this->getDependenciesFor($id);
 
                 return new $id(...$dependencies);
             };
         } else {
-            throw new \Exception("Class $id not exists, cannot auto wire");
+            throw new ClassNotFoundException($id, "cannot auto wire");
         }
     }
 

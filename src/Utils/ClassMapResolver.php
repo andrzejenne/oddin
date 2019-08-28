@@ -19,12 +19,17 @@ class ClassMapResolver
     /** @var array */
     private $classMap;
 
+    /** @var string */
+    private $autoloadPath;
+
     /**
      * ClassMapResolver constructor.
+     * @param string $autoloadPath
      */
-    public function __construct()
+    public function __construct(string $autoloadPath)
     {
         $this->classMap = [];
+        $this->autoloadPath = $autoloadPath;
     }
 
     /**
@@ -48,7 +53,7 @@ class ClassMapResolver
     public function getClassLoader()
     {
         if ($this->classLoader === null) {
-            $this->classLoader = require('vendor/autoload.php');
+            $this->classLoader = require($this->autoloadPath);
         }
 
         return $this->classLoader;
