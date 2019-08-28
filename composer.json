@@ -13,6 +13,7 @@
   "autoload": {
     "psr-4": {
       "BigBIT\\Oddin\\": "src/",
+      "BigBIT\\Oddin\\Support\\": "support/",
       "BigBIT\\Oddin\\Examples\\": "examples/"
     }
   },
