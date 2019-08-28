@@ -9,7 +9,7 @@ use Slim\Collection;
  * Class SlimBootstrap
  * @package BigBIT\Oddin\Support
  */
-class SlimBootstrap extends Bootstrap {
+class Slim3Bootstrap extends Bootstrap {
     public static $defaultSettings = [
         'httpVersion' => '1.1',
         'responseChunkSize' => 4096,
