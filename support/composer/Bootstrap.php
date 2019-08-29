@@ -1,9 +1,6 @@
 <?php
 namespace BigBIT\Oddin\Support\composer;
 
-use BigBIT\Oddin\Exceptions\ClassNotFoundException;
-use BigBIT\Oddin\Exceptions\InvalidContainerImplementationException;
-use BigBIT\Oddin\Exceptions\PathNotFoundException;
 use BigBIT\Oddin\Singletons\DIResolver;
 use BigBIT\Oddin\Utils\CacheResolver;
 use BigBIT\Oddin\Utils\ClassMapResolver;
@@ -19,21 +16,21 @@ use Symfony\Component\Cache\Psr16Cache;
 class Bootstrap extends \BigBIT\DIBootstrap\Bootstrap
 {
     /**
+     * @param ContainerInterface $container
      * @param array $bindings
-     * @throws \BigBIT\DIBootstrap\Exceptions\ClassNotFoundException
-     * @throws \BigBIT\DIBootstrap\Exceptions\InvalidContainerImplementationException
-     * @throws \BigBIT\DIBootstrap\Exceptions\PathNotFoundException
      */
-    protected static function boot(array $bindings) {
-        parent::boot($bindings);
+    protected static function bootContainer(ContainerInterface $container, array $bindings) {
+        parent::bootContainer($container, $bindings);
 
         DIResolver::create(static::$container);
     }
 
+
+
     /**
      * @return array
      */
-    private static function getDefaultBindings() {
+    protected static function getDefaultBindings() {
         return [
             CacheInterface::class => function () {
                 return new Psr16Cache(new ArrayAdapter());

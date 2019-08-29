@@ -8,27 +8,35 @@
     "packages": [
         {
             "name": "bigbit/di-bootstrap",
-            "version": "v1.0.0",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andrzejenne/di-bootstrap.git",
-                "reference": "545fc8e3d76c669a2aa67bba87a420d2641d7bb4"
+                "reference": "4dd80bd0c08005481483f85dcc758160b73cf30c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andrzejenne/di-bootstrap/zipball/545fc8e3d76c669a2aa67bba87a420d2641d7bb4",
-                "reference": "545fc8e3d76c669a2aa67bba87a420d2641d7bb4",
+                "url": "https://api.github.com/repos/andrzejenne/di-bootstrap/zipball/4dd80bd0c08005481483f85dcc758160b73cf30c",
+                "reference": "4dd80bd0c08005481483f85dcc758160b73cf30c",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2.0",
                 "psr/container": "^1.0"
             },
+            "require-dev": {
+                "phpstan/phpstan": "^0.11.15"
+            },
             "suggest": {
                 "bigbit/oddin": "^1.0.0",
                 "bigbit/smart-di": "^1.0.0"
             },
             "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BigBIT\\DIBootstrap\\": "src/"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -40,7 +48,7 @@
                 }
             ],
             "description": "App DI Container bootstrapping",
-            "time": "2019-08-29T10:05:23+00:00"
+            "time": "2019-08-29T10:59:01+00:00"
         },
         {
             "name": "psr/container",
