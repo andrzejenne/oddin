@@ -1,6 +1,9 @@
 <?php
-namespace BigBIT\Oddin;
+namespace BigBIT\Oddin\Support\composer;
 
+use BigBIT\Oddin\Exceptions\ClassNotFoundException;
+use BigBIT\Oddin\Exceptions\InvalidContainerImplementationException;
+use BigBIT\Oddin\Exceptions\PathNotFoundException;
 use BigBIT\Oddin\Singletons\DIResolver;
 use BigBIT\Oddin\Utils\CacheResolver;
 use BigBIT\Oddin\Utils\ClassMapResolver;
@@ -11,43 +14,18 @@ use Symfony\Component\Cache\Psr16Cache;
 
 /**
  * Class Bootstrap
- * @package BigBIT\Oddin
+ * @package BigBIT\Oddin\Support\composer
  */
-class Bootstrap
+class Bootstrap extends \BigBIT\DIBootstrap\Bootstrap
 {
-    /** @var string */
-    public static $autoloadPath = 'vendor/autoload.php';
-
-    /** @var SmartContainer */
-    protected static $container;
-
     /**
      * @param array $bindings
-     * @return SmartContainer
-     */
-    public static function getContainer(array $bindings = []) {
-        if (null === static::$container) {
-            static::boot($bindings);
-        }
-
-        return static::$container;
-    }
-
-    /**
-     * @param array $bindings
+     * @throws \BigBIT\DIBootstrap\Exceptions\ClassNotFoundException
+     * @throws \BigBIT\DIBootstrap\Exceptions\InvalidContainerImplementationException
+     * @throws \BigBIT\DIBootstrap\Exceptions\PathNotFoundException
      */
     protected static function boot(array $bindings) {
-        require (static::$autoloadPath);
-
-        static::$container = new SmartContainer();
-
-        $bindings = array_merge(static::getDefaultBindings(), $bindings);
-
-        foreach ($bindings as $key => $value) {
-            static::$container[$key] = $value;
-        }
-
-        static::$container[ContainerInterface::class] = static::$container;
+        parent::boot($bindings);
 
         DIResolver::create(static::$container);
     }
@@ -61,7 +39,7 @@ class Bootstrap
                 return new Psr16Cache(new ArrayAdapter());
             },
             ClassMapResolver::class => function () {
-                return new ClassMapResolver(static::$autoloadPath);
+                return new ClassMapResolver(static::getAutoloadPath());
             },
             CacheResolver::class => function (ContainerInterface $container) {
                 return new CacheResolver(

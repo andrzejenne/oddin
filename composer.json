@@ -19,6 +19,7 @@
   },
   "require": {
     "psr/simple-cache": "^1.0",
+    "bigbit/di-bootstrap": "^1.0.0",
 
     "php": "^7.2.0"
   },
@@ -30,9 +31,13 @@
     "tracy/tracy": "^2.6"
   },
 
+  "suggest": {
+    "bigbit/smart-di": "~1.0.0"
+  },
+
   "scripts": {
     "test": "phpunit --configuration config/phpunit.xml",
-    "stan": "phpstan analyse --level 7 -c config/phpstan.neon src examples"
+    "stan": "phpstan analyse --level 7 -c phpstan.neon src examples"
   },
 
   "bin": [

@@ -3,27 +3,23 @@
 
 namespace BigBIT\Oddin\Exceptions;
 
-
-use Psr\Container\ContainerExceptionInterface;
 use Throwable;
 
 /**
- * Class CannotResolveException
- * @package BigBIT\Oddin\Examples\exeptions
+ * Class ClassNotFoundException
+ * @package BigBIT\Oddin\Exceptions
  */
-class ClassNotFoundException extends \Exception implements ContainerExceptionInterface
+class ClassNotFoundException extends \Exception
 {
     /**
-     * CannotResolveException constructor.
-     * @param string $id
-     * @param string $message
+     * ClassNotFoundException constructor.
+     * @param string $className
      * @param int $code
      * @param Throwable|null $previous
      */
-    public function __construct($id = "", $message = "", $code = 0, Throwable $previous = null)
+    public function __construct($className = "", $code = 0, Throwable $previous = null)
     {
-        parent::__construct(sprintf("Class %s not exists"
-            . (!empty($message) ? ", $message" : ""), $id), $code, $previous);
+        parent::__construct("Class $className not found", $code, $previous);
     }
 
 }
