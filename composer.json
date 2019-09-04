@@ -26,14 +26,6 @@
     "oddin"
   ],
 
-  "extra": {
-    "laravel": {
-      "providers": [
-        "BigBIT\\Oddin\\Support\\laravel\\Provider"
-      ]
-    }
-  },
-
   "require": {
     "psr/simple-cache": "^1.0",
     "bigbit/di-bootstrap": "^1.0.0",
