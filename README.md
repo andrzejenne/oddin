@@ -94,8 +94,6 @@ There are special use cases, where you have to manually define class maps.
 Cleaner controller classes, less resource demanding. But it's up to you, where you use ODDIN.
 
 ## Known Issues
-* only default vendor dir supported now
-* no cache generator yet
 * no code fixer yet
 
 ## Quick start
@@ -120,12 +118,16 @@ $app = new SomeApp($container);
 $app->run();
 ```
 ### Slim v3
-For slim version 3 support bootstrap was added.
+For Slim version 3 support bootstrap was added. It's in separate package bigbit/smart-di-slim.
+```bash
+composer require bigbit/smart-di-slim
+```
+
 ```php
-use BigBIT\Oddin\Support\Slim3Bootstrap;
+use BigBIT\SmartDI\Support\slim\Bootstrap;
 use Psr\Container\ContainerInterface;
 
-$container = Slim3Bootstrap::getContainer($bindings);
+$container = Bootstrap::getContainer($bindings);
 
 $app = new Slim\App($container);
 
