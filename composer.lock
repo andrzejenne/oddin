@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "bigbit/di-bootstrap",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andrzejenne/di-bootstrap.git",
-                "reference": "4dd80bd0c08005481483f85dcc758160b73cf30c"
+                "reference": "39821b9e95e514b65599f4ba963ee9cd543e01b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andrzejenne/di-bootstrap/zipball/4dd80bd0c08005481483f85dcc758160b73cf30c",
-                "reference": "4dd80bd0c08005481483f85dcc758160b73cf30c",
+                "url": "https://api.github.com/repos/andrzejenne/di-bootstrap/zipball/39821b9e95e514b65599f4ba963ee9cd543e01b2",
+                "reference": "39821b9e95e514b65599f4ba963ee9cd543e01b2",
                 "shasum": ""
             },
             "require": {
@@ -48,7 +48,7 @@
                 }
             ],
             "description": "App DI Container bootstrapping",
-            "time": "2019-08-29T10:59:01+00:00"
+            "time": "2019-08-29T12:09:45+00:00"
         },
         {
             "name": "psr/container",
@@ -873,16 +873,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.2.3",
+            "version": "v4.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "e612609022e935f3d0337c1295176505b41188c8"
+                "reference": "97e59c7a16464196a8b9c77c47df68e4a39a45c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/e612609022e935f3d0337c1295176505b41188c8",
-                "reference": "e612609022e935f3d0337c1295176505b41188c8",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/97e59c7a16464196a8b9c77c47df68e4a39a45c4",
+                "reference": "97e59c7a16464196a8b9c77c47df68e4a39a45c4",
                 "shasum": ""
             },
             "require": {
@@ -920,7 +920,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-08-12T20:17:41+00:00"
+            "time": "2019-09-01T07:51:21+00:00"
         },
         {
             "name": "ocramius/package-versions",
