@@ -13,7 +13,7 @@ class SimpleClassReader
         USE_REG = '/use\s+([^\s;]+)(?:\s+as\s+([^;]+))?/';
 
     /** @var ClassMapResolver */
-    private $classMapResolver;
+    private ClassMapResolver $classMapResolver;
 
     /**
      * ClassReader constructor.
@@ -57,10 +57,14 @@ class SimpleClassReader
             foreach ($lines as $line) {
                 $property = $this->getPropertyFromLine($line);
                 if ($property) {
-                    $properties[$property[1]] = $this->getPropertyClassWithNameSpace($property, $statements, $namespace);
+                    $properties[$property[1]] = $this->getAnnotationPropertyClassWithNameSpace($property, $statements, $namespace);
                 }
             }
 
+        }
+
+        foreach ($reflectionClass->getProperties() as $property) {
+            $properties[$property->getName()] = $this->getReflectionPropertyClassWithNameSpace($property, $statements, $namespace);
         }
 
         return $properties;
@@ -69,6 +73,7 @@ class SimpleClassReader
     /**
      * @param string $line
      * @return null|array
+     * @deprecated
      */
     private function getPropertyFromLine(string $line): ?array
     {
@@ -151,7 +156,31 @@ class SimpleClassReader
      * @return mixed|string
      * @throws \Exception
      */
-    private function getPropertyClassWithNameSpace(array $property, array $statements, string $namespace) {
+    private function getAnnotationPropertyClassWithNameSpace(array $property, array $statements, string $namespace) {
+        if (isset($statements[$property[0]])) {
+            return $statements[$property[0]];
+        } else {
+            if ($this->classMapResolver->getClassPath($property[0])) {
+                return $property[0];
+            } else {
+                return $namespace . '\\' . $property[0];
+            }
+        }
+    }
+
+    /**
+     * @param \ReflectionProperty $property
+     * @param array $statements
+     * @param string $namespace
+     * @return mixed|string
+     * @throws \Exception
+     */
+    private function getReflectionPropertyClassWithNameSpace(\ReflectionProperty $property, array $statements, string $namespace) {
+        $reflectionType = $property->getType();
+        if ($reflectionType) {
+//            if ($reflectionType->)
+        }
+
         if (isset($statements[$property[0]])) {
             return $statements[$property[0]];
         } else {

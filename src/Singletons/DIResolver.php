@@ -15,16 +15,16 @@ use Psr\SimpleCache\InvalidArgumentException;
 class DIResolver
 {
     /** @var DIResolver */
-    static $instance;
+    static DIResolver $instance;
 
     /** @var ContainerInterface */
-    private $container;
+    private ContainerInterface $container;
 
     /** @var string[] */
-    private $services;
+    private array $services;
 
     /** @var CacheResolver */
-    private $cacheResolver;
+    private CacheResolver $cacheResolver;
 
     /**
      * Resolver constructor.
@@ -45,7 +45,7 @@ class DIResolver
      * @param ContainerInterface $container
      * @return DIResolver
      */
-    final public static function create(ContainerInterface $container)
+    final public static function create(ContainerInterface $container): DIResolver
     {
         static::$instance = new static($container);
 
@@ -102,7 +102,7 @@ class DIResolver
     /**
      * @return CacheResolver|mixed
      */
-    private function getCacheResolver()
+    private function getCacheResolver(): CacheResolver
     {
         if ($this->cacheResolver === null) {
             $this->cacheResolver = $this->container->get(CacheResolver::class);

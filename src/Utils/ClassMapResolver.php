@@ -14,13 +14,13 @@ class ClassMapResolver
 {
 
     /** @var ClassLoader */
-    private $classLoader;
+    private ClassLoader $classLoader;
 
     /** @var array */
-    private $classMap;
+    private array $classMap;
 
     /** @var string */
-    private $autoloadPath;
+    private string $autoloadPath;
 
     /**
      * ClassMapResolver constructor.
@@ -50,7 +50,7 @@ class ClassMapResolver
     /**
      * @return ClassLoader
      */
-    public function getClassLoader()
+    public function getClassLoader(): ClassLoader
     {
         if ($this->classLoader === null) {
             $this->classLoader = require($this->autoloadPath);
