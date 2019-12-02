@@ -27,6 +27,9 @@ class CacheResolver
     /** @var array */
     private array $classMap = [];
 
+    /** @var bool */
+    private bool $isDeprecatedAllowed = false;
+
     /**
      * CacheResolver constructor.
      * @param ClassMapResolver $classMapResolver
@@ -59,6 +62,15 @@ class CacheResolver
     public function setCache(CacheInterface $cache): void
     {
         $this->cache = $cache;
+    }
+
+    /**
+     * @return $this
+     */
+    public function allowDeprecated(): CacheResolver {
+        $this->isDeprecatedAllowed = true;
+
+        return $this;
     }
 
     /**
@@ -112,6 +124,9 @@ class CacheResolver
     {
         if ($this->reader === null) {
             $this->reader = new SimpleClassReader($this->classMapResolver);
+            if ($this->isDeprecatedAllowed) {
+                $this->reader->allowDeprecated();
+            }
         }
 
         return $this->reader;

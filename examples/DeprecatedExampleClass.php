@@ -9,14 +9,10 @@ use BigBIT\Oddin\Examples\ns\ExampleService as NsExampleService;
 /**
  * Class ExampleClass
  * @package BigBIT\Oddin\Examples
+ * @property ExampleService $service
+ * @property NsExampleService $exampleService
  */
-class ExampleClass
+class DeprecatedExampleClass
 {
     use InjectsOnDemand;
-
-    /** @var ExampleService */
-    private ExampleService $service;
-
-    /** @var NsExampleService */
-    private NsExampleService $exampleService;
 }

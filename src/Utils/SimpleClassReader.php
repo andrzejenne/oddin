@@ -9,11 +9,14 @@ namespace BigBIT\Oddin\Utils;
  */
 class SimpleClassReader
 {
-    const PROPERTY_REG = '/@property\s+([^\s\$]+)\s+\$([\w\d]+)/',
+    const DEPRECATED_PROPERTY_REG = '/@property\s+([^\s\$]+)\s+\$([\w\d]+)/',
         USE_REG = '/use\s+([^\s;]+)(?:\s+as\s+([^;]+))?/';
 
     /** @var ClassMapResolver */
     private ClassMapResolver $classMapResolver;
+
+    /** @var bool */
+    private bool $isDeprecatedAllowed = false;
 
     /**
      * ClassReader constructor.
@@ -22,6 +25,15 @@ class SimpleClassReader
     public function __construct(ClassMapResolver $classMapResolver)
     {
         $this->classMapResolver = $classMapResolver;
+    }
+
+    /**
+     * @return $this
+     */
+    public function allowDeprecated() {
+        $this->isDeprecatedAllowed = true;
+
+        return $this;
     }
 
     /**
@@ -50,17 +62,20 @@ class SimpleClassReader
         $statements = $this->getUseStatements($reflectionClass->name);
         $namespace = $reflectionClass->getNamespaceName();
 
-        $docComment = $reflectionClass->getDocComment();
-        if ($docComment) {
-            $lines = explode(PHP_EOL, $docComment);
+        if ($this->isDeprecatedAllowed) {
+            $docComment = $reflectionClass->getDocComment();
+            if ($docComment) {
+                $lines = explode(PHP_EOL, $docComment);
 
-            foreach ($lines as $line) {
-                $property = $this->getPropertyFromLine($line);
-                if ($property) {
-                    $properties[$property[1]] = $this->getAnnotationPropertyClassWithNameSpace($property, $statements, $namespace);
+                foreach ($lines as $line) {
+                    $property = $this->getPropertyFromLine($line);
+                    if ($property) {
+                        $properties[$property[1]] = $this->getAnnotationPropertyClassWithNameSpace($property,
+                            $statements, $namespace);
+                    }
                 }
-            }
 
+            }
         }
 
         foreach ($reflectionClass->getProperties() as $property) {
@@ -77,7 +92,7 @@ class SimpleClassReader
      */
     private function getPropertyFromLine(string $line): ?array
     {
-        preg_match(static::PROPERTY_REG, $line, $matches);
+        preg_match(static::DEPRECATED_PROPERTY_REG, $line, $matches);
 
         if (count($matches)) {
             return [$matches[1], $matches[2]];
@@ -153,41 +168,50 @@ class SimpleClassReader
      * @param array $property
      * @param array $statements
      * @param string $namespace
-     * @return mixed|string
+     * @return string
      * @throws \Exception
+     * @deprecated
      */
     private function getAnnotationPropertyClassWithNameSpace(array $property, array $statements, string $namespace) {
-        if (isset($statements[$property[0]])) {
-            return $statements[$property[0]];
-        } else {
-            if ($this->classMapResolver->getClassPath($property[0])) {
-                return $property[0];
-            } else {
-                return $namespace . '\\' . $property[0];
-            }
-        }
+        return $this->getPropertyClassWithNamesSpace($property[0], $statements, $namespace);
     }
 
     /**
      * @param \ReflectionProperty $property
      * @param array $statements
      * @param string $namespace
-     * @return mixed|string
+     * @return string
      * @throws \Exception
      */
-    private function getReflectionPropertyClassWithNameSpace(\ReflectionProperty $property, array $statements, string $namespace) {
+    private function getReflectionPropertyClassWithNameSpace(\ReflectionProperty $property, array $statements, string $namespace) : string
+    {
         $reflectionType = $property->getType();
-        if ($reflectionType) {
-//            if ($reflectionType->)
+        if ($reflectionType instanceof \ReflectionNamedType) {
+            $type = $reflectionType->getName();
+        }
+        else {
+            throw new \Exception("Cannot resolve {$property->getName()} property type");
         }
 
-        if (isset($statements[$property[0]])) {
-            return $statements[$property[0]];
+        return $this->getPropertyClassWithNamesSpace($type, $statements, $namespace);
+    }
+
+    /**
+     * @param string $type
+     * @param array $statements
+     * @param string $namespace
+     * @return string
+     * @throws \Exception
+     */
+    private function getPropertyClassWithNamesSpace(string $type, array $statements, string $namespace): string
+    {
+        if (isset($statements[$type])) {
+            return $statements[$type];
         } else {
-            if ($this->classMapResolver->getClassPath($property[0])) {
-                return $property[0];
+            if ($this->classMapResolver->getClassPath($type)) {
+                return $type;
             } else {
-                return $namespace . '\\' . $property[0];
+                return $namespace . '\\' . $type;
             }
         }
     }
