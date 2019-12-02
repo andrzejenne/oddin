@@ -24,7 +24,7 @@ class DIResolver
     private array $services;
 
     /** @var CacheResolver */
-    private CacheResolver $cacheResolver;
+    private ?CacheResolver $cacheResolver = null;
 
     /**
      * Resolver constructor.

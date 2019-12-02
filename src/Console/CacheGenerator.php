@@ -30,8 +30,6 @@ use Symfony\Component\Cache\Adapter\RedisAdapter as Redis;
 /**
  * Class CacheGenerator
  * @package BigBIT\Oddin\Console
- * @property ClassMapResolver $classMapResolver
- * @property CacheResolver $cacheResolver
  */
 class CacheGenerator extends Command
 {
@@ -54,6 +52,11 @@ class CacheGenerator extends Command
 
     ];
 
+    /** @var ClassMapResolver */
+    private ClassMapResolver $classMapResolver;
+
+    /** @var CacheResolver  */
+    private CacheResolver $cacheResolver;
 
     protected function configure()
     {

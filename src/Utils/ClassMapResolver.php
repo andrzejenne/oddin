@@ -14,7 +14,7 @@ class ClassMapResolver
 {
 
     /** @var ClassLoader */
-    private ClassLoader $classLoader;
+    private ?ClassLoader $classLoader = null;
 
     /** @var array */
     private array $classMap;

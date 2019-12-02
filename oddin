@@ -1,9 +1,13 @@
 #!/usr/bin/php
 <?php
-require (__DIR__ . '/src/Bootstrap.php');
 use BigBIT\Oddin\Console\CacheGenerator;
 use Symfony\Component\Console\Application;
-use BigBIT\Oddin\Bootstrap;
+use BigBIT\DIBootstrap\Bootstrap;
+
+require_once(
+    __DIR__ . '/vendor/bigbit/di-bootstrap/src/Bootstrap.php'
+);
+Bootstrap::detectVendorPath();
 
 Bootstrap::getContainer();
 

@@ -19,13 +19,13 @@ class CacheResolver
     private CacheInterface $cache;
 
     /** @var SimpleClassReader */
-    private SimpleClassReader $reader;
+    private ?SimpleClassReader $reader = null;
 
     /** @var ClassMapResolver */
     private ClassMapResolver $classMapResolver;
 
     /** @var array */
-    private array $classMap;
+    private array $classMap = [];
 
     /**
      * CacheResolver constructor.

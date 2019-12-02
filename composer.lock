@@ -4,101 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7eea9456be31ad1885cc36ea5401d285",
+    "content-hash": "829087cf1f0d217b8cdde8a946f37283",
     "packages": [
-        {
-            "name": "bigbit/di-bootstrap",
-            "version": "v1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/andrzejenne/di-bootstrap.git",
-                "reference": "39821b9e95e514b65599f4ba963ee9cd543e01b2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/andrzejenne/di-bootstrap/zipball/39821b9e95e514b65599f4ba963ee9cd543e01b2",
-                "reference": "39821b9e95e514b65599f4ba963ee9cd543e01b2",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2.0",
-                "psr/container": "^1.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^0.11.15"
-            },
-            "suggest": {
-                "bigbit/oddin": "^1.0.0",
-                "bigbit/smart-di": "^1.0.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "BigBIT\\DIBootstrap\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andrzej Heczko",
-                    "email": "andrzej.heczko@gmail.com"
-                }
-            ],
-            "description": "App DI Container bootstrapping",
-            "time": "2019-08-29T12:09:45+00:00"
-        },
-        {
-            "name": "psr/container",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/container.git",
-                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
-                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Container\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Common Container Interface (PHP FIG PSR-11)",
-            "homepage": "https://github.com/php-fig/container",
-            "keywords": [
-                "PSR-11",
-                "container",
-                "container-interface",
-                "container-interop",
-                "psr"
-            ],
-            "time": "2017-02-14T16:28:37+00:00"
-        },
         {
             "name": "psr/simple-cache",
             "version": "1.0.1",
@@ -149,6 +56,97 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "bigbit/di-bootstrap",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/andrzejenne/di-bootstrap.git",
+                "reference": "28cbacc27348c0d0668efbe5d464856e92753b4b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/andrzejenne/di-bootstrap/zipball/28cbacc27348c0d0668efbe5d464856e92753b4b",
+                "reference": "28cbacc27348c0d0668efbe5d464856e92753b4b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4.0",
+                "psr/container": "^1.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.11.15"
+            },
+            "suggest": {
+                "bigbit/oddin": "^2.0.0",
+                "bigbit/smart-di": "^1.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BigBIT\\DIBootstrap\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrzej Heczko",
+                    "email": "andrzej.heczko@gmail.com"
+                }
+            ],
+            "description": "App DI Container bootstrapping",
+            "time": "2019-12-02T13:42:02+00:00"
+        },
+        {
+            "name": "bigbit/smart-di",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/andrzejenne/smart-di.git",
+                "reference": "c4aa7008b5cda87aaca62ae0ce40ff89e10a6a4c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/andrzejenne/smart-di/zipball/c4aa7008b5cda87aaca62ae0ce40ff89e10a6a4c",
+                "reference": "c4aa7008b5cda87aaca62ae0ce40ff89e10a6a4c",
+                "shasum": ""
+            },
+            "require": {
+                "bigbit/di-bootstrap": "^2.0.0",
+                "php": "^7.4.0",
+                "psr/container": "^1.0"
+            },
+            "provide": {
+                "psr/container": "~1.0.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.11.15"
+            },
+            "suggest": {
+                "bigbit/oddin": "~2.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BigBIT\\SmartDI\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrzej Heczko",
+                    "email": "andrzej.heczko@gmail.com"
+                }
+            ],
+            "description": "SmartContainer evolved from ODDIN ExampleContainer",
+            "time": "2019-12-02T14:07:40+00:00"
+        },
         {
             "name": "composer/xdebug-handler",
             "version": "1.4.0",
@@ -1795,6 +1793,55 @@
                 "psr-6"
             ],
             "time": "2016-08-06T20:24:11+00:00"
+        },
+        {
+            "name": "psr/container",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/container.git",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common Container Interface (PHP FIG PSR-11)",
+            "homepage": "https://github.com/php-fig/container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interface",
+                "container-interop",
+                "psr"
+            ],
+            "time": "2017-02-14T16:28:37+00:00"
         },
         {
             "name": "psr/log",
