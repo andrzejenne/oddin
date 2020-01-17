@@ -16,4 +16,12 @@ class ParentClass
 
     /** @var ExampleService */
     private ExampleService $parentService;
+
+    /**
+     * @return ExampleService
+     */
+    public function getParentService()
+    {
+        return $this->parentService;
+    }
 }

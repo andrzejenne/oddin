@@ -6,7 +6,7 @@ sugar again and again and ...
 
 If you are using DI in your projects, you have to write property declarations and initialize them in constructors.
 You can use dependency container or define injectable constructor arguments. It depends on framework used.
-As of PHP7.4
+For of PHP7.4.0 only, 7.4.1 breaks functionality, php bug #78904.
 ```php
 class Foo {
     private Dependency1 $dep1;

@@ -42,7 +42,7 @@
   },
 
   "suggest": {
-    "bigbit/smart-di": "~1.0.0",
+    "bigbit/smart-di": "~2.0.0",
     "symfony/cache": "^4.3"
   }
 }
