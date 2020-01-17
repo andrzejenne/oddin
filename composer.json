@@ -33,7 +33,7 @@
   },
   "require-dev": {
     "symfony/console": "^4.3",
-    "symfony/cache": "^4.3",
+    "symfony/cache": "^4.3.8",
     "phpunit/phpunit": "^8.2",
     "phpstan/phpstan": "^0.11.15",
     "tracy/tracy": "^2.6"
