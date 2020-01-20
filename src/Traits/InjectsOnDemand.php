@@ -25,32 +25,30 @@ trait InjectsOnDemand
         return $this->$propertyName;
     }
 
-    /**
-     * @param $propertyName
-     * @param $value
-     * @return mixed|null
-     * @throws InvalidArgumentException
-     * @throws \ReflectionException
-     */
-    public function __set($propertyName, $value)
-    {
-        $this->$propertyName = DIResolver::getInjectableFor($propertyName, $this);
+//    /**
+//     * @param $propertyName
+//     * @param $value
+//     * @return mixed|null
+//     * @throws InvalidArgumentException
+//     * @throws \ReflectionException
+//     */
+//    public function __set($propertyName, $value)
+//    {
+//        $this->$propertyName = DIResolver::getInjectableFor($propertyName, $this);
+//
+//        return $this->$propertyName;
+//    }
 
-        return $this->$propertyName;
-    }
-
-    /**
-     * @param $propertyName
-     * @return mixed|null
-     * @throws InvalidArgumentException
-     * @throws \ReflectionException
-     */
-    public function __isset($propertyName)
-    {
-        $this->$propertyName = DIResolver::getInjectableFor($propertyName, $this);
-
-        return $this->$propertyName;
-    }
-
-
+//    /**
+//     * @param $propertyName
+//     * @return mixed|null
+//     * @throws InvalidArgumentException
+//     * @throws \ReflectionException
+//     */
+//    public function __isset($propertyName)
+//    {
+//        $this->$propertyName = DIResolver::getInjectableFor($propertyName, $this);
+//
+//        return isset($this->$propertyName);
+//    }
 }

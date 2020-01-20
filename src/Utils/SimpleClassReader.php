@@ -211,7 +211,7 @@ class SimpleClassReader
             if ($this->classMapResolver->getClassPath($type)) {
                 return $type;
             } else {
-                return $namespace . '\\' . $type;
+                return empty($namespace) ? $type : $namespace . '\\' . $type;
             }
         }
     }

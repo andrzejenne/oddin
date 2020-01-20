@@ -19,4 +19,25 @@ class ExampleClass
 
     /** @var NsExampleService */
     private NsExampleService $exampleService;
+
+    public function __construct()
+    {
+        unset($this->service, $this->exampleService);
+    }
+
+    /**
+     * @return ExampleService
+     */
+    public function getService(): ExampleService
+    {
+        return $this->service;
+    }
+
+    /**
+     * @return NsExampleService
+     */
+    public function getExampleService(): NsExampleService
+    {
+        return $this->exampleService;
+    }
 }

@@ -17,6 +17,12 @@ class ParentClass
     /** @var ExampleService */
     private ExampleService $parentService;
 
+    public function __construct()
+    {
+        unset($this->parentService);
+    }
+
+
     /**
      * @return ExampleService
      */

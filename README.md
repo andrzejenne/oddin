@@ -52,6 +52,16 @@ class Foo {
     
     private Depencency3 $dep3;
 
+    /**
+    * Foo constructor.
+    * as of php7.4.1, we have to unset properties in constructor
+    * https://bugs.php.net/bug.php?id=78904 
+    */
+    public function __construct() 
+    {
+        unset($this->dep1, $this->dep2, $this->dep3);
+    }
+
     public function bar() 
     {
         $this->dep1->doSomething();
@@ -70,8 +80,7 @@ class Foo {
 ```
 
 ## How it works
-PHP classes can have magic methods. The __get magic method is invoked every time you want to use inaccessible property.
-Property can be undeclared or private/protected from outside.
+PHP classes can have magic methods. The __get magic method is invoked every time you want to use unset property.
 DIResolver uses parser to get dependency metadata from class or deprecated property annotations.
 InjectsOnDemand trait defines magic __get method, which handles all our property requests.
 Once property is initialized by trait, magic method is not called again.

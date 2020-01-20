@@ -26,8 +26,8 @@ class DIResolverTest extends TestCase
     {
         $example = new ExampleClass();
 
-        $this->assertInstanceOf(ExampleService::class, $example->service);
-        $this->assertInstanceOf(NsExampleService::class, $example->exampleService);
+        $this->assertInstanceOf(ExampleService::class, $example->getService());
+        $this->assertInstanceOf(NsExampleService::class, $example->getExampleService());
     }
 
     public function testInheritance()
@@ -39,5 +39,4 @@ class DIResolverTest extends TestCase
         $this->assertInstanceOf(ParentExampleService::class, $child->getParentService());
 
     }
-
 }
