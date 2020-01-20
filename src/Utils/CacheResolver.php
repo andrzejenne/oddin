@@ -16,16 +16,19 @@ use Symfony\Component\Cache\Psr16Cache;
 class CacheResolver
 {
     /** @var CacheInterface */
-    private $cache;
+    private CacheInterface $cache;
 
     /** @var SimpleClassReader */
-    private $reader;
+    private ?SimpleClassReader $reader = null;
 
     /** @var ClassMapResolver */
-    private $classMapResolver;
+    private ClassMapResolver $classMapResolver;
 
     /** @var array */
-    private $classMap;
+    private array $classMap = [];
+
+    /** @var bool */
+    private bool $isDeprecatedAllowed = false;
 
     /**
      * CacheResolver constructor.
@@ -56,9 +59,18 @@ class CacheResolver
     /**
      * @param CacheInterface $cache
      */
-    public function setCache(CacheInterface $cache)
+    public function setCache(CacheInterface $cache): void
     {
         $this->cache = $cache;
+    }
+
+    /**
+     * @return $this
+     */
+    public function allowDeprecated(): CacheResolver {
+        $this->isDeprecatedAllowed = true;
+
+        return $this;
     }
 
     /**
@@ -81,7 +93,7 @@ class CacheResolver
     /**
      * @throws InvalidArgumentException
      */
-    public function shutDown()
+    public function shutDown(): void
     {
         $this->getCache()->set('classMap', $this->classMap);
     }
@@ -112,6 +124,9 @@ class CacheResolver
     {
         if ($this->reader === null) {
             $this->reader = new SimpleClassReader($this->classMapResolver);
+            if ($this->isDeprecatedAllowed) {
+                $this->reader->allowDeprecated();
+            }
         }
 
         return $this->reader;
@@ -137,7 +152,7 @@ class CacheResolver
     /**
      * @return CacheInterface|Psr16Cache
      */
-    private function getCache() {
+    private function getCache(): CacheInterface {
         if (null === $this->cache) {
             $this->cache = new Psr16Cache(new ArrayAdapter());
         }
